@@ -29,7 +29,6 @@ chown -Rvf app:app /app
 yum -y update && yum -y install docker tmux git nginx gcc make libffi-devel openssl-devel python-devel
 curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose
 chmod +x /usr/bin/docker-compose
-pip install butterfly
 /sbin/chkconfig nginx on
 /sbin/chkconfig docker on
 gpasswd -a app docker
@@ -109,7 +108,6 @@ server {
   }
 }
 EOF
-echo "/usr/local/bin/butterfly.server.py --unsecure --host=127.0.0.1 --port=3000 &" >>/etc/rc.d/rc.local
 service nginx start
 service sshd restart
 bash /etc/rc.d/rc.local
