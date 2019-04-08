@@ -10,7 +10,7 @@ fi
 test -e base-ssh/id_rsa ||  ssh-keygen -t rsa -f base-ssh/id_rsa -N '' 
 cp base-ssh/id_* devenv
 for i in \
-    base-ssh devenv
+    devenv
 do docker build -t md3/$i $i || exit 1
 done
 if ! grep docker-compose /etc/rc.d/rc.local >/dev/null

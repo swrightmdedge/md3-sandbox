@@ -4,5 +4,6 @@ devenv:
   container_name: devenv
   image: md3/devenv
   ports:
-    - "6080:6080"
-    - "5900:5900"
+    - "8080:8080"
+    - "3306:3306"
+    - "443:443"
