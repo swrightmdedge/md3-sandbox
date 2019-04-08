@@ -1,0 +1,46 @@
+hadoop:
+  hostname: hadoop
+  domainname: loc
+  container_name: hadoop
+  image: bddk/hadoop
+  ports:
+     - "8020" 
+  volumes:
+     - "/app/Dropbox:/app/Dropbox"
+zeppelin:
+  hostname: zeppelin
+  domainname: loc
+  container_name: zeppelin 
+  image: bddk/zeppelin
+  links:
+    - hadoop:hadoop.loc
+  ports:
+    - "8080"
+  volumes:
+    - "/app/Dropbox:/app/Dropbox"
+sparkjobserver:
+  hostname: sparkjobserver
+  domainname: loc
+  container_name: sparkjobserver
+  image: bddk/sparkjobserver
+  links:
+    - hadoop:hadoop.loc
+  ports:
+    - "8090:8090"
+  volumes:
+    - "/app/Dropbox:/app/Dropbox"
+  command: "--executor-memory 256m"
+devenv:
+  hostname: devenv
+  domainname: loc
+  container_name: devenv
+  image: bddk/devenv
+  links:
+    - hadoop:hadoop.loc
+    - zeppelin:zeppelin.loc
+    - sparkjobserver:sparkjobserver.loc 
+  ports:
+    - "6080:6080"
+    - "5900:5900"
+  volumes:
+    - "/app/Dropbox:/app/Dropbox"
