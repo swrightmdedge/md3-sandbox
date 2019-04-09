@@ -29,6 +29,7 @@ chown -Rvf app:app /app
 yum -y update && yum -y install docker tmux git nginx gcc make libffi-devel openssl-devel python-devel
 curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose
 chmod +x /usr/bin/docker-compose
+pip install butterfly
 /sbin/chkconfig nginx on
 /sbin/chkconfig docker on
 gpasswd -a app docker
@@ -41,7 +42,7 @@ echo "curl http://www.duckdns.org/update?domains=${DDHOST}\&token=${DDTOKEN}\&ip
 bash /etc/rc.d/rc.local
 # restore a backup of letsencrypt if provided
 if test -n "$LETGZ"
-then wget -O- "$LETGZ" | tar xzf - -C / 
+then wget -O- "$LETGZ" | tar xzf - -C /
 fi
 # generate a certificate with letsencrypt
 if ! test -d /app/letsencrypt/live
@@ -59,8 +60,8 @@ then
      --email ${LEEMAIL:?email} -d ${DDHOST}.duckdns.org --agree-tos
 fi
 # fallback to selfsigned if it did not work
-if ! test -e /app/letsencrypt/live/${DDHOST}.duckdns.org/fullchain.pem 
-then 
+if ! test -e /app/letsencrypt/live/${DDHOST}.duckdns.org/fullchain.pem
+then
   mkdir -p /app/letsencrypt/live/${HOST}.duckdns.org
   printf "\\n\\n\\n\\n\\n\\n\\n" |\
   openssl req -x509 -newkey rsa:2048 \
@@ -108,6 +109,7 @@ server {
   }
 }
 EOF
+echo "/usr/local/bin/butterfly.server.py --unsecure --host=127.0.0.1 --port=3000 &" >>/etc/rc.d/rc.local
 service nginx start
 service sshd restart
 bash /etc/rc.d/rc.local

@@ -2,7 +2,7 @@
 
 ```
 #!/bin/bash
-wget -O- https://raw.githubusercontent.com/swrightmdedge/md3-sandbox/master/md3-init.sh |\
+wget -O- https://raw.githubusercontent.com/swrightmdedge/md3-sandbox/master/ami-init.sh |\
  PASSWORD="changeme"\
  TOKEN="duck-dns-token"\
  HOST="duckdnshost"\
